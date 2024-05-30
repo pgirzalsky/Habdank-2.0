@@ -12,6 +12,8 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
+ScrollTrigger.normalizeScroll(true);
+
 // SplitType
 
 function splitType() {
