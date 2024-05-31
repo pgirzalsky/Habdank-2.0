@@ -1,7 +1,9 @@
 gsap.registerPlugin(ScrollTrigger);
 
+let lenis;
+
 function initLenis() {
-	const lenis = new Lenis({
+	lenis = new Lenis({
 		duration: 0.6,
 	});
 
@@ -64,7 +66,7 @@ function initSplitType() {
 				SplitType.revert(".split-word-inner");
 				SplitType.revert(".split-word");
 				SplitType.revert(".split-char");
-				splitType();
+				initSplitType();
 			}, 500);
 		}
 	});
@@ -191,13 +193,17 @@ function initPreloaderGrid() {
 }
 
 // Master Timeline
+let master;
+
 function initMasterTimeline() {
-	const master = gsap.timeline({ paused: true });
+	master = gsap.timeline({ paused: true });
 }
+
+let pl;
 
 // Preloader Animation
 function initPreloader() {
-	const pl = gsap.timeline();
+	pl = gsap.timeline();
 
 	// If not a first time visit in this tab
 	if (sessionStorage.getItem("visited") == null) {
@@ -301,8 +307,9 @@ function initPreloader() {
 			},
 			"-=0.8"
 		);
-
-		gsap.delayedCall(2.66, lenis.start);
+		setTimeout(function () {
+			lenis.start();
+		}, 2750);
 	} else {
 		// is a revisit
 		pl.set(".preloader .line.horizontal", {
@@ -506,6 +513,7 @@ Webflow.push(function () {
 	initLenis();
 	initSplitType();
 	initMasterTimeline();
+	initPreloaderGrid();
 	initPreloader();
 	initMenuInteractions();
 	initFooterAnimation();
