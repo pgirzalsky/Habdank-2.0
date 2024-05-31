@@ -31,9 +31,8 @@ function initTimelineSlider() {
 		},
 	});
 
-	$(".timeline-fade").each(function () {
-		$(this).appendTo($(this).prev(".timeline-slider"));
-	});
+	// Fix fade overlay dom hierarchy
+	$(".timeline-fade").appendTo(".timeline-slider");
 
 	const $timelineYears = $(".timeline-year");
 	const $yearContentContainer = $(".year-content-container");
