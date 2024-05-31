@@ -1,3 +1,4 @@
+// Timeline Slider
 function initTimelineSlider() {
 	const timelineSlider = new Swiper(".swiper.timeline-slider", {
 		breakpoints: {
@@ -109,19 +110,18 @@ function initTestimonialSliders() {
 		{
 			selector: ".swiper.testimonial-image-slider.first",
 			initialSlide: 0,
-			yPercent: { initial: -10, final: 10 },
+			yPercent: { initial: -8, final: 8 },
 		},
 		{
 			selector: ".swiper.testimonial-image-slider.last",
 			initialSlide: 1,
-			yPercent: { initial: 10, final: -10 },
+			yPercent: { initial: -8, final: 8 },
 		},
 	];
 
 	function testimonialSliders(config) {
 		const swiper = new Swiper(config.selector, {
 			loop: true,
-			loopPreventsSliding: false,
 			speed: 1200,
 			autoplay: {
 				delay: 4000,
@@ -191,11 +191,50 @@ function initTestimonialSliders() {
 			fadeEffect: {
 				crossFade: true,
 			},
+			initialSlide: 0,
+			pagination: {
+				el: ".swiper-pagination.last",
+				clickable: true,
+			},
+			breakpoints: {
+				320: {
+					pagination: {
+						el: ".swiper-pagination.first",
+					},
+				},
+				768: {
+					pagination: {
+						el: ".swiper-pagination.last",
+					},
+				},
+			},
 		}
 	);
 
+	// Synchronize Sliders
 	testimonialImageSliderFirst.controller.control = testimonialImageSliderLast;
 	testimonialImageSliderFirst.controller.control = testimonialQuoteSlider;
+
+	testimonialImageSliderLast.on("click", function () {
+		testimonialImageSliderFirst.slideNext();
+		testimonialImageSliderLast.slideNext();
+	});
+
+	testimonialImageSliderFirst.on("click", function () {
+		testimonialImageSliderFirst.slidePrev();
+		testimonialImageSliderLast.slidePrev();
+	});
+
+	$(".swiper-pagination").on("click", ".swiper-pagination-bullet", function () {
+		const index = $(this).index();
+		// Slide all sliders to the corresponding index
+		testimonialImageSliderFirst.slideToLoop(index);
+		testimonialQuoteSlider.slideToLoop(index);
+		// Calculate the index for testimonialImageSliderLast considering looped behavior
+		const lastIndex =
+			index === testimonialImageSliderFirst.slides.length - 1 ? 0 : index + 1;
+		testimonialImageSliderLast.slideToLoop(lastIndex);
+	});
 
 	// Show arrow while hovering on Desktop
 	if ($(window).width() > 992) {
@@ -227,18 +266,6 @@ function initTestimonialSliders() {
 			}
 		);
 	}
-
-	testimonialImageSliderLast.on("click", function () {
-		testimonialImageSliderFirst.slideNext();
-		testimonialImageSliderLast.slideNext();
-		testimonialQuoteSlider.slideNext();
-	});
-
-	testimonialImageSliderFirst.on("click", function () {
-		testimonialImageSliderFirst.slidePrev();
-		testimonialImageSliderLast.slidePrev();
-		testimonialQuoteSlider.slidePrev();
-	});
 }
 
 Webflow.push(function () {
