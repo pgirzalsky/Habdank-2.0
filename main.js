@@ -1,3 +1,4 @@
+// Test change
 gsap.registerPlugin(ScrollTrigger);
 
 let lenis;
