@@ -1,6 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
 
-/*
 const lenis = new Lenis({
 	duration: 0.6,
 });
@@ -12,7 +11,6 @@ gsap.ticker.add((time) => {
 });
 
 gsap.ticker.lagSmoothing(0);
-*/
 
 // SplitType
 function splitType() {
@@ -207,6 +205,8 @@ const pl = gsap.timeline();
 
 // If not a first time visit in this tab
 if (sessionStorage.getItem("visited") == null) {
+	lenis.stop();
+
 	pl.set("html", {
 		cursor: "wait",
 	});
@@ -305,6 +305,8 @@ if (sessionStorage.getItem("visited") == null) {
 		},
 		"-=0.8"
 	);
+
+	gsap.delayedCall(2.66, lenis.start);
 } else {
 	// is a revisit
 	pl.set(".preloader .line.horizontal", {
@@ -435,9 +437,11 @@ $(document).ready(function () {
 		if ($(this).hasClass("menu-open")) {
 			$(this).removeClass("menu-open");
 			fsmOut.restart();
+			lenis.start();
 		} else {
 			$(this).addClass("menu-open");
 			fsmIn.restart();
+			lenis.stop();
 		}
 	});
 });
