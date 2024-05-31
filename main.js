@@ -1,19 +1,23 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const lenis = new Lenis({
-	duration: 0.6,
-});
+function initLenis() {
+	const lenis = new Lenis({
+		duration: 0.6,
+	});
 
-lenis.on("scroll", ScrollTrigger.update);
+	lenis.on("scroll", ScrollTrigger.update);
 
-gsap.ticker.add((time) => {
-	lenis.raf(time * 1000);
-});
+	gsap.ticker.add((time) => {
+		lenis.raf(time * 1000);
+	});
 
-gsap.ticker.lagSmoothing(0);
+	gsap.ticker.lagSmoothing(0);
+}
 
 // SplitType
-function splitType() {
+function initSplitType() {
+	let windowWidth = window.innerWidth;
+	var resizeTimer;
 	let elementsToSplitLines = document.querySelectorAll(".split-lines");
 	let elementsToSplitWords = document.querySelectorAll(".split-words");
 	let elementsToSplitChars = document.querySelectorAll(".split-chars");
@@ -47,210 +51,164 @@ function splitType() {
 		wordClass: "split-word",
 		charClass: "split-char",
 	});
+
+	// SplitType resize
+
+	window.addEventListener("resize", function () {
+		if (windowWidth !== window.innerWidth) {
+			windowWidth = window.innerWidth;
+			clearTimeout(resizeTimer);
+			resizeTimer = setTimeout(function () {
+				SplitType.revert(".split-line-inner");
+				SplitType.revert(".split-line");
+				SplitType.revert(".split-word-inner");
+				SplitType.revert(".split-word");
+				SplitType.revert(".split-char");
+				splitType();
+			}, 500);
+		}
+	});
 }
-
-var Webflow = Webflow || [];
-
-Webflow.push(function () {
-	splitType();
-});
-
-// SplitType resize
-
-let windowWidth = window.innerWidth;
-
-var resizeTimer;
-
-window.addEventListener("resize", function () {
-	if (windowWidth !== window.innerWidth) {
-		windowWidth = window.innerWidth;
-		clearTimeout(resizeTimer);
-		resizeTimer = setTimeout(function () {
-			SplitType.revert(".split-line-inner");
-			SplitType.revert(".split-line");
-			SplitType.revert(".split-word-inner");
-			SplitType.revert(".split-word");
-			SplitType.revert(".split-char");
-			splitType();
-		}, 500);
-	}
-});
-
-// Master Timeline
-
-const master = gsap.timeline({ paused: true });
 
 // Prelaoder Grid
+function initPreloaderGrid() {
+	function drawDots() {
+		// Get all horizontal and vertical lines
+		var horizontalLines = $(".line.horizontal");
+		var verticalLines = $(".line.vertical");
 
-function drawDots() {
-	// Get all horizontal and vertical lines
-	var horizontalLines = $(".line.horizontal");
-	var verticalLines = $(".line.vertical");
+		// Iterate over each pair of lines
+		horizontalLines.each(function () {
+			var hTop = $(this).position().top;
 
-	// Iterate over each pair of lines
-	horizontalLines.each(function () {
-		var hTop = $(this).position().top;
+			verticalLines.each(function () {
+				var vLeft = $(this).position().left;
 
-		verticalLines.each(function () {
-			var vLeft = $(this).position().left;
-
-			// Create a new dot at the intersection
-			$('<div class="cross"></div>')
-				.css({
-					top: hTop + "px",
-					left: vLeft + "px",
-				})
-				.appendTo(".cross-container");
+				// Create a new dot at the intersection
+				$('<div class="cross"></div>')
+					.css({
+						top: hTop + "px",
+						left: vLeft + "px",
+					})
+					.appendTo(".cross-container");
+			});
 		});
+	}
+
+	function removeDuplicates(array, key) {
+		var result = [];
+		var map = new Map();
+
+		for (var item of array) {
+			if (!map.has(item[key])) {
+				map.set(item[key], true);
+				result.push(item);
+			}
+		}
+		return result;
+	}
+
+	function drawGrid() {
+		// Clear previous lines and dots
+		$(".horizontal-container, .vertical-container, .cross-container").empty();
+
+		// Calculate line distance for both horizontal and vertical lines
+		var distance = $(window).height() * 0.12;
+
+		// Calculate the center of the y-axis and x-axis
+		var centerY = $(window).height() / 2;
+		var centerX = $(window).width() / 2;
+
+		// Arrays to store the lines
+		var horizontalLines = [];
+		var verticalLines = [];
+
+		// Draw horizontal lines
+		var i = 0;
+		while (
+			centerY - i * distance >= 0 &&
+			centerY + i * distance <= $(window).height()
+		) {
+			if (i % 2 === 0) {
+				horizontalLines.push({
+					top: centerY - i * distance,
+					line: $('<div class="line horizontal"></div>'),
+				});
+				horizontalLines.push({
+					top: centerY + i * distance,
+					line: $('<div class="line horizontal"></div>'),
+				});
+			}
+			i++;
+		}
+
+		// Draw vertical lines
+		var j = 0;
+		while (
+			centerX - j * distance >= 0 &&
+			centerX + j * distance <= $(window).width()
+		) {
+			if (j % 2 === 0) {
+				verticalLines.push({
+					left: centerX - j * distance,
+					line: $('<div class="line vertical"></div>'),
+				});
+				verticalLines.push({
+					left: centerX + j * distance,
+					line: $('<div class="line vertical"></div>'),
+				});
+			}
+			j++;
+		}
+
+		// Remove duplicates
+		horizontalLines = removeDuplicates(horizontalLines, "top");
+		verticalLines = removeDuplicates(verticalLines, "left");
+
+		// Sort and append horizontal lines
+		horizontalLines.sort((a, b) => a.top - b.top);
+		for (let line of horizontalLines) {
+			line.line.css("top", line.top + "px").appendTo(".horizontal-container");
+		}
+
+		// Sort and append vertical lines
+		verticalLines.sort((a, b) => a.left - b.left);
+		for (let line of verticalLines) {
+			line.line.css("left", line.left + "px").appendTo(".vertical-container");
+		}
+
+		// Draw dots at intersections
+		drawDots();
+	}
+
+	// Initial draw
+	drawGrid();
+
+	// Update on resize
+	$(window).on("resize", function () {
+		drawGrid();
 	});
 }
 
-function removeDuplicates(array, key) {
-	var result = [];
-	var map = new Map();
-
-	for (var item of array) {
-		if (!map.has(item[key])) {
-			map.set(item[key], true);
-			result.push(item);
-		}
-	}
-	return result;
+// Master Timeline
+function initMasterTimeline() {
+	const master = gsap.timeline({ paused: true });
 }
-
-function drawGrid() {
-	// Clear previous lines and dots
-	$(".horizontal-container, .vertical-container, .cross-container").empty();
-
-	// Calculate line distance for both horizontal and vertical lines
-	var distance = $(window).height() * 0.12;
-
-	// Calculate the center of the y-axis and x-axis
-	var centerY = $(window).height() / 2;
-	var centerX = $(window).width() / 2;
-
-	// Arrays to store the lines
-	var horizontalLines = [];
-	var verticalLines = [];
-
-	// Draw horizontal lines
-	var i = 0;
-	while (
-		centerY - i * distance >= 0 &&
-		centerY + i * distance <= $(window).height()
-	) {
-		if (i % 2 === 0) {
-			horizontalLines.push({
-				top: centerY - i * distance,
-				line: $('<div class="line horizontal"></div>'),
-			});
-			horizontalLines.push({
-				top: centerY + i * distance,
-				line: $('<div class="line horizontal"></div>'),
-			});
-		}
-		i++;
-	}
-
-	// Draw vertical lines
-	var j = 0;
-	while (
-		centerX - j * distance >= 0 &&
-		centerX + j * distance <= $(window).width()
-	) {
-		if (j % 2 === 0) {
-			verticalLines.push({
-				left: centerX - j * distance,
-				line: $('<div class="line vertical"></div>'),
-			});
-			verticalLines.push({
-				left: centerX + j * distance,
-				line: $('<div class="line vertical"></div>'),
-			});
-		}
-		j++;
-	}
-
-	// Remove duplicates
-	horizontalLines = removeDuplicates(horizontalLines, "top");
-	verticalLines = removeDuplicates(verticalLines, "left");
-
-	// Sort and append horizontal lines
-	horizontalLines.sort((a, b) => a.top - b.top);
-	for (let line of horizontalLines) {
-		line.line.css("top", line.top + "px").appendTo(".horizontal-container");
-	}
-
-	// Sort and append vertical lines
-	verticalLines.sort((a, b) => a.left - b.left);
-	for (let line of verticalLines) {
-		line.line.css("left", line.left + "px").appendTo(".vertical-container");
-	}
-
-	// Draw dots at intersections
-	drawDots();
-}
-
-// Initial draw
-drawGrid();
-
-// Update on resize
-$(window).on("resize", function () {
-	drawGrid();
-});
 
 // Preloader Animation
+function initPreloader() {
+	const pl = gsap.timeline();
 
-const pl = gsap.timeline();
+	// If not a first time visit in this tab
+	if (sessionStorage.getItem("visited") == null) {
+		lenis.stop();
 
-// If not a first time visit in this tab
-if (sessionStorage.getItem("visited") == null) {
-	lenis.stop();
+		pl.set("html", {
+			cursor: "wait",
+		});
 
-	pl.set("html", {
-		cursor: "wait",
-	});
-
-	pl.to(".preloader .line.horizontal", {
-		x: "0%",
-		stagger: {
-			from: "center",
-			axis: "x",
-			each: 0.08,
-		},
-		duration: 1.2,
-		ease: "power2.inOut",
-	});
-
-	pl.to(
-		".preloader .line.vertical",
-		{
-			y: "0%",
-			stagger: {
-				from: "center",
-				axis: "y",
-				each: 0.08,
-			},
-			duration: 1.2,
-			ease: "power2.inOut",
-		},
-		"<"
-	);
-
-	pl.to(
-		".preloader .cross",
-		{
-			opacity: 1,
-			duration: 1.2,
-			ease: "power2.inOut",
-		},
-		"<"
-	);
-
-	pl.to(
-		".preloader .line.horizontal",
-		{
-			x: "100%",
+		pl.to(".preloader .line.horizontal", {
+			x: "0%",
 			stagger: {
 				from: "center",
 				axis: "x",
@@ -258,90 +216,128 @@ if (sessionStorage.getItem("visited") == null) {
 			},
 			duration: 1.2,
 			ease: "power2.inOut",
-		},
-		">+0.5"
-	);
+		});
 
-	pl.to(
-		".preloader .line.vertical",
-		{
-			y: "-100%",
-			stagger: {
-				from: "center",
-				axis: "y",
-				each: 0.08,
+		pl.to(
+			".preloader .line.vertical",
+			{
+				y: "0%",
+				stagger: {
+					from: "center",
+					axis: "y",
+					each: 0.08,
+				},
+				duration: 1.2,
+				ease: "power2.inOut",
 			},
-			duration: 1.2,
-			ease: "power2.inOut",
-		},
-		"<"
-	);
+			"<"
+		);
 
-	pl.to(
-		".preloader .cross",
-		{
+		pl.to(
+			".preloader .cross",
+			{
+				opacity: 1,
+				duration: 1.2,
+				ease: "power2.inOut",
+			},
+			"<"
+		);
+
+		pl.to(
+			".preloader .line.horizontal",
+			{
+				x: "100%",
+				stagger: {
+					from: "center",
+					axis: "x",
+					each: 0.08,
+				},
+				duration: 1.2,
+				ease: "power2.inOut",
+			},
+			">+0.5"
+		);
+
+		pl.to(
+			".preloader .line.vertical",
+			{
+				y: "-100%",
+				stagger: {
+					from: "center",
+					axis: "y",
+					each: 0.08,
+				},
+				duration: 1.2,
+				ease: "power2.inOut",
+			},
+			"<"
+		);
+
+		pl.to(
+			".preloader .cross",
+			{
+				opacity: 0,
+				duration: 1.2,
+				ease: "power2.inOut",
+			},
+			"<"
+		);
+
+		pl.to(
+			".preloader",
+			{
+				clipPath: "inset(0% 0% 100% 0%)",
+				duration: 1.2,
+				ease: "power2.inOut",
+				display: "none",
+			},
+			"<"
+		);
+
+		pl.set(
+			"html",
+			{
+				cursor: "auto",
+			},
+			"-=0.8"
+		);
+
+		gsap.delayedCall(2.66, lenis.start);
+	} else {
+		// is a revisit
+		pl.set(".preloader .line.horizontal", {
+			x: "0%",
 			opacity: 0,
-			duration: 1.2,
-			ease: "power2.inOut",
-		},
-		"<"
-	);
+		});
 
-	pl.to(
-		".preloader",
-		{
-			clipPath: "inset(0% 0% 100% 0%)",
-			duration: 1.2,
-			ease: "power2.inOut",
-			display: "none",
-		},
-		"<"
-	);
-
-	pl.set(
-		"html",
-		{
-			cursor: "auto",
-		},
-		"-=0.8"
-	);
-
-	gsap.delayedCall(2.66, lenis.start);
-} else {
-	// is a revisit
-	pl.set(".preloader .line.horizontal", {
-		x: "0%",
-		opacity: 0,
-	});
-
-	pl.set(".preloader .line.vertical", {
-		y: "0%",
-		opacity: 0,
-	});
-
-	pl.set(".preloader .cross", {
-		opacity: 0,
-	});
-
-	pl.set(".lottie-logo", {
-		opacity: 0,
-	});
-
-	pl.to(
-		".preloader",
-		{
+		pl.set(".preloader .line.vertical", {
+			y: "0%",
 			opacity: 0,
-			duration: 0.45,
-			ease: "power2.inOut",
-			display: "none",
-		},
-		""
-	);
+		});
+
+		pl.set(".preloader .cross", {
+			opacity: 0,
+		});
+
+		pl.set(".lottie-logo", {
+			opacity: 0,
+		});
+
+		pl.to(
+			".preloader",
+			{
+				opacity: 0,
+				duration: 0.45,
+				ease: "power2.inOut",
+				display: "none",
+			},
+			""
+		);
+	}
 }
 
-// Hamburger Menu
-
-$(document).ready(function () {
+function initMenuInteractions() {
+	// Hamburger Menu
 	const hamburgerMenu = $(".hamburger-menu");
 	const navbar = $(".navbar");
 
@@ -444,11 +440,11 @@ $(document).ready(function () {
 			lenis.stop();
 		}
 	});
-});
+}
 
 // Footer Animation
 
-Webflow.push(function () {
+function initFooterAnimation() {
 	setTimeout(function () {
 		const footerAnim = gsap.from(".footer h2 .split-word-inner", {
 			y: "100%",
@@ -471,10 +467,10 @@ Webflow.push(function () {
 			onLeaveBack: () => footerAnim.pause(0),
 		});
 	}, 300);
-});
+}
 
 // Footer Arrow Hover
-function footerArrowHover() {
+function initFooterArrowHover() {
 	const footerHeading = $(".footer h2");
 	const footerArrow = $(".footer .arrow-hover");
 
@@ -494,16 +490,24 @@ function footerArrowHover() {
 	});
 }
 
-// Initial enabling of the mousemove event
-footerArrowHover();
-
-// Update ScrollTrigger when lazy images are loaded
-
-Webflow.push(function () {
+/* // Update ScrollTrigger when lazy images are loaded (Causes sccrolling to stutter on Mobile)
+initLazyLoadFix() {
 	const lazyImages = $("img[loading='lazy']");
 	lazyImages.each(function () {
 		$(this).on("load", function () {
 			ScrollTrigger.refresh();
 		});
 	});
+} */
+
+var Webflow = Webflow || [];
+
+Webflow.push(function () {
+	initLenis();
+	initSplitType();
+	initMasterTimeline();
+	initPreloader();
+	initMenuInteractions();
+	initFooterAnimation();
+	initFooterArrowHover();
 });

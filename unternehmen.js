@@ -1,4 +1,4 @@
-function initTimeline() {
+function initTimelineSlider() {
 	const timelineSlider = new Swiper(".swiper.timeline-slider", {
 		breakpoints: {
 			360: {
@@ -242,6 +242,6 @@ function initTestimonialSliders() {
 }
 
 Webflow.push(function () {
-	initTimeline();
+	initTimelineSlider();
 	initTestimonialSliders();
 });
