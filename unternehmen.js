@@ -31,6 +31,10 @@ function initTimelineSlider() {
 		},
 	});
 
+	$(".timeline-fade").each(function () {
+		$(this).appendTo($(this).prev(".timeline-slider"));
+	});
+
 	const $timelineYears = $(".timeline-year");
 	const $yearContentContainer = $(".year-content-container");
 	const $yearContentItem = $(".year-content-item");
