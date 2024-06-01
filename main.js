@@ -4,9 +4,7 @@ gsap.registerPlugin(ScrollTrigger);
 let lenis;
 
 function initLenis() {
-	lenis = new Lenis({
-		duration: 0.6,
-	});
+	lenis = new Lenis();
 
 	lenis.on("scroll", ScrollTrigger.update);
 
