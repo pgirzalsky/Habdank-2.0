@@ -465,6 +465,7 @@ function initHeadingAnimations() {
 				trigger: triggerElement,
 				start: "bottom top",
 				toggleActions: "play none none none",
+				showMarkers: true,
 			},
 			yPercent: 0,
 			ease: "Expo.easeOut",
