@@ -21,7 +21,7 @@ function initTestimonialSliders() {
 			loop: true,
 			speed: 1200,
 			autoplay: {
-				delay: 6000,
+				delay: 5000,
 			},
 			allowTouchMove: false,
 			initialSlide: config.initialSlide,
