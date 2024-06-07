@@ -450,6 +450,35 @@ function initMenuInteractions() {
 	});
 }
 
+// Heading Animations
+function initHeadingAnimations() {
+	$("h2.split=words.animated").each(function () {
+		let triggerElement = $(this);
+		let targetElement = $(this).find(".split-word-inner");
+
+		let tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: triggerElement,
+				start: "0% 80%",
+				end: "100% 0%",
+				toggleActions: "play none none none",
+			},
+		});
+
+		gsap.set(targetElement, {
+			yPercent: 110,
+		});
+
+		tl.to(targetElement, {
+			yPercent: 0,
+			ease: "Expo.easeOut",
+			duration: 1.5,
+			stagger: 0.05,
+			clearProps: "all",
+		});
+	});
+}
+
 // Footer Animation
 
 function initFooterAnimation() {
@@ -517,6 +546,7 @@ Webflow.push(function () {
 	initPreloaderGrid();
 	initPreloader();
 	initMenuInteractions();
+	initHeadingAnimations();
 	initFooterAnimation();
 	initFooterArrowHover();
 });
