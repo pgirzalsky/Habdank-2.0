@@ -129,7 +129,13 @@ function initHeroAnimation() {
 	);
 
 	master.add(pl);
-	master.add(hero, "-=.6");
+
+	if (sessionStorage.getItem("visited") == null) {
+		master.add(hero, "-=1");
+		sessionStorage.setItem("visited", "true");
+	} else {
+		master.add(hero, "-=.4");
+	}
 	master.play();
 }
 
