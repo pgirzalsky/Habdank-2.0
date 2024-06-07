@@ -461,7 +461,6 @@ function initHeadingAnimations() {
 				trigger: triggerElement,
 				start: "top 80%",
 				toggleActions: "play none none none",
-				markers: true,
 			},
 			yPercent: 100,
 			ease: "power3.out",
