@@ -5,7 +5,7 @@ let lenis;
 
 function initLenis() {
 	lenis = new Lenis({
-		duration: 0.6,
+		duration: 1,
 	});
 
 	lenis.on("scroll", ScrollTrigger.update);
