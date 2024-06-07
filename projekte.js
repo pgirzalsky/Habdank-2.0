@@ -98,22 +98,17 @@ if ($(window).width() > 540) {
 }
 
 function initHeroAnimation() {
+	hero.set(".once-in", {
+		y: "100vh",
+	});
+
 	hero.from(".hero .split-char", {
 		y: "100%",
 		stagger: 0.02,
 		rotation: 4,
-		ease: "power4.out",
-		duration: 0.85,
-	});
-
-	/*
-	hero.from(".split-char-inner", {
-		y: "100%",
-		duration: 1.2,
 		ease: "power3.out",
-		clearProps: true,
+		duration: 1.2,
 	});
-  */
 
 	hero.to(
 		".once-in",
@@ -121,7 +116,6 @@ function initHeroAnimation() {
 			y: "0vh",
 			opacity: 1,
 			duration: 1.2,
-			stagger: 0.07,
 			ease: "power3.out",
 			clearProps: true,
 		},
