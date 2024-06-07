@@ -112,6 +112,26 @@ function initTestimonialSliders() {
 	testimonialImageSliderFirst.controller.control = testimonialImageSliderLast;
 	testimonialImageSliderFirst.controller.control = testimonialQuoteSlider;
 
+	// Stop autoplay initialy
+	testimonialImageSliderFirst.autoplay.stop();
+	testimonialImageSliderLast.autoplay.stop();
+
+	// Start autoplay when coming into view
+	ScrollTrigger.create({
+		trigger: ".testimonial-quote-slider",
+		start: "top 80%",
+		onEnter: () => {
+			testimonialImageSliderFirst.autoplay.start();
+			testimonialImageSliderLast.autoplay.start();
+			$(".progress-bar").removeClass("paused");
+		},
+		onLeaveBack: () => {
+			testimonialImageSliderFirst.autoplay.stop();
+			testimonialImageSliderLast.autoplay.stop();
+			$(".progress-bar").addClass("paused");
+		},
+	});
+
 	testimonialImageSliderLast.on("click", function () {
 		testimonialImageSliderFirst.slideNext();
 		testimonialImageSliderLast.slideNext();
