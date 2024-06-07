@@ -1,4 +1,4 @@
-// Testimonial Sliders
+/// Testimonial Sliders
 function initTestimonialSliders() {
 	const progressBar = document.querySelector(".progress");
 
@@ -21,7 +21,7 @@ function initTestimonialSliders() {
 			loop: true,
 			speed: 1200,
 			autoplay: {
-				delay: 6000,
+				delay: 5000,
 			},
 			allowTouchMove: false,
 			initialSlide: config.initialSlide,
@@ -111,6 +111,26 @@ function initTestimonialSliders() {
 	// Synchronize Sliders
 	testimonialImageSliderFirst.controller.control = testimonialImageSliderLast;
 	testimonialImageSliderFirst.controller.control = testimonialQuoteSlider;
+
+	// Stop autoplay initialy
+	testimonialImageSliderFirst.autoplay.stop();
+	testimonialImageSliderLast.autoplay.stop();
+
+	// Start autoplay when coming into view
+	ScrollTrigger.create({
+		trigger: ".testimonial-quote-slider",
+		start: "top 80%",
+		onEnter: () => {
+			testimonialImageSliderFirst.autoplay.start();
+			testimonialImageSliderLast.autoplay.start();
+			$(".progress-bar").removeClass("paused");
+		},
+		onLeaveBack: () => {
+			testimonialImageSliderFirst.autoplay.stop();
+			testimonialImageSliderLast.autoplay.stop();
+			$(".progress-bar").addClass("paused");
+		},
+	});
 
 	testimonialImageSliderLast.on("click", function () {
 		testimonialImageSliderFirst.slideNext();
