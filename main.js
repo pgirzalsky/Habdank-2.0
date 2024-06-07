@@ -460,7 +460,7 @@ function initHeadingAnimations() {
 			yPercent: 110,
 		});
 
-		gsap.to(hamburgerMenu, {
+		gsap.to(targetElement, {
 			scrollTrigger: {
 				trigger: triggerElement,
 				start: "bottom top",
