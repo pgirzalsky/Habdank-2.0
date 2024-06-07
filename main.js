@@ -456,20 +456,16 @@ function initHeadingAnimations() {
 		let triggerElement = $(this);
 		let targetElement = $(this).find(".split-word-inner");
 
-		let tl = gsap.timeline({
-			scrollTrigger: {
-				trigger: triggerElement,
-				start: "0% 80%",
-				end: "100% 0%",
-				toggleActions: "play none none none",
-			},
-		});
-
 		gsap.set(targetElement, {
 			yPercent: 110,
 		});
 
-		tl.to(targetElement, {
+		gsap.to(hamburgerMenu, {
+			scrollTrigger: {
+				trigger: triggerElement,
+				start: "bottom top",
+				toggleActions: "play none none none",
+			},
 			yPercent: 0,
 			ease: "Expo.easeOut",
 			duration: 1.5,
