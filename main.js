@@ -456,20 +456,16 @@ function initHeadingAnimations() {
 		let triggerElement = $(this);
 		let targetElement = $(this).find(".split-word-inner");
 
-		gsap.set(targetElement, {
-			yPercent: 110,
-		});
-
-		gsap.to(targetElement, {
+		gsap.from(targetElement, {
 			scrollTrigger: {
 				trigger: triggerElement,
-				start: "bottom top",
+				start: "top 80%",
 				toggleActions: "play none none none",
-				showMarkers: true,
+				markers: true,
 			},
-			yPercent: 0,
-			ease: "Expo.easeOut",
-			duration: 1.5,
+			yPercent: 100,
+			ease: "power3.out",
+			duration: 0.8,
 			stagger: 0.05,
 			clearProps: "all",
 		});
