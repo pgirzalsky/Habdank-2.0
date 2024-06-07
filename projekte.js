@@ -87,21 +87,17 @@ const hero = gsap.timeline();
 
 if ($(window).width() > 540) {
 	hero.set(".once-in", {
-		opacity: 0,
 		y: "50vh",
+		opacity: 0,
 	});
 } else {
 	hero.set(".once-in", {
-		opacity: 0,
 		y: "10vh",
+		opacity: 0,
 	});
 }
 
 function initHeroAnimation() {
-	hero.set(".once-in", {
-		y: "100vh",
-	});
-
 	hero.from(".hero .split-char", {
 		y: "100%",
 		stagger: 0.02,
