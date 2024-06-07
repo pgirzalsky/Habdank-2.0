@@ -452,7 +452,7 @@ function initMenuInteractions() {
 
 // Heading Animations
 function initHeadingAnimations() {
-	$("h2.split=words.animated").each(function () {
+	$("h2.split-words.animated").each(function () {
 		let triggerElement = $(this);
 		let targetElement = $(this).find(".split-word-inner");
 
