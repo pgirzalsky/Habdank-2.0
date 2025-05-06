@@ -499,29 +499,37 @@ function initFooterAnimation() {
 }
 
 // Arrow Hover
-function initArrowHover(triggerElement, arrowElement) {
+function initArrowHover(triggerElement, arrowElement, options = {}) {
     const $trigger = $(triggerElement);
     const $arrow = $(arrowElement);
+    
+    // Default options
+    const {
+        initialTransform = "translate(-50%, -50%) scale(0)",
+        showTransform = "translate(-50%, -50%) scale(1)",
+        hideTransform = "translate(-50%, -50%) scale(0)",
+        opacity = { show: "1", hide: "0" }
+    } = options;
 
     // Set initial state
     $arrow.css({
-        transform: "translate(-50%, -50%) scale(0)",
-        opacity: "0",
+        transform: initialTransform,
+        opacity: opacity.hide,
     });
 
     $trigger.on("mousemove", function (event) {
         $arrow.css({
             left: event.clientX + "px",
             top: event.clientY + "px",
-            transform: "translate(-50%, -50%) scale(1)",
-            opacity: "1",
+            transform: showTransform,
+            opacity: opacity.show,
         });
     });
 
     $trigger.on("mouseleave", function () {
         $arrow.css({
-            transform: "translate(-50%, -50%) scale(0)",
-            opacity: "0",
+            transform: hideTransform,
+            opacity: opacity.hide,
         });
     });
 }
