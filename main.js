@@ -508,47 +508,48 @@ function initArrowHover(triggerElement, arrowElement, options = {}) {
         initialTransform = "translate(-50%, -50%) scale(0)",
         showTransform = "translate(-50%, -50%) scale(1)",
         hideTransform = "translate(-50%, -50%) scale(0)",
-        instantRotation = null, // Rotation that changes immediately without transition
+        rotation = "rotate(0deg)", // Rotation that stays with element
         opacity = { show: "1", hide: "0" }
     } = options;
 
-    // Set initial state
+    // Create a wrapper approach
     $arrow.css({
-        transform: initialTransform,
+        transform: rotation, // Set rotation on arrow (no transition on this)
         opacity: opacity.hide,
+    });
+    
+    // Create inner element for transition effects if it doesn't exist
+    if ($arrow.find('.arrow-transform').length === 0) {
+        $arrow.wrapInner('<div class="arrow-transform"></div>');
+    }
+    
+    const $arrowTransform = $arrow.find('.arrow-transform');
+    
+    // Apply initial transform to inner element
+    $arrowTransform.css({
+        transform: initialTransform,
+        transition: 'transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1)',
     });
 
     $trigger.on("mousemove", function (event) {
-        // If instant rotation is specified, temporarily remove transition
-        if (instantRotation) {
-            const currentTransition = $arrow.css('transition');
-            $arrow.css('transition', 'opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1)');
-            
-            $arrow.css({
-                left: event.clientX + "px",
-                top: event.clientY + "px",
-                transform: `${showTransform} ${instantRotation}`,
-                opacity: opacity.show,
-            });
-            
-            // Restore transition after the rotation is applied
-            setTimeout(() => {
-                $arrow.css('transition', currentTransition);
-            }, 10);
-        } else {
-            $arrow.css({
-                left: event.clientX + "px",
-                top: event.clientY + "px",
-                transform: showTransform,
-                opacity: opacity.show,
-            });
-        }
+        $arrow.css({
+            left: event.clientX + "px",
+            top: event.clientY + "px",
+            opacity: opacity.show,
+        });
+        
+        $arrowTransform.css({
+            transform: showTransform,
+        });
     });
 
     $trigger.on("mouseleave", function () {
         $arrow.css({
-            transform: hideTransform,
             opacity: opacity.hide,
+        });
+        
+        $arrowTransform.css({
+            transform: hideTransform,
         });
     });
 }
