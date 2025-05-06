@@ -508,6 +508,7 @@ function initArrowHover(triggerElement, arrowElement, options = {}) {
         initialTransform = "translate(-50%, -50%) scale(0)",
         showTransform = "translate(-50%, -50%) scale(1)",
         hideTransform = "translate(-50%, -50%) scale(0)",
+        instantRotation = null, // Rotation that changes immediately without transition
         opacity = { show: "1", hide: "0" }
     } = options;
 
@@ -518,12 +519,30 @@ function initArrowHover(triggerElement, arrowElement, options = {}) {
     });
 
     $trigger.on("mousemove", function (event) {
-        $arrow.css({
-            left: event.clientX + "px",
-            top: event.clientY + "px",
-            transform: showTransform,
-            opacity: opacity.show,
-        });
+        // If instant rotation is specified, temporarily remove transition
+        if (instantRotation) {
+            const currentTransition = $arrow.css('transition');
+            $arrow.css('transition', 'opacity 0.3s cubic-bezier(0.215, 0.61, 0.355, 1)');
+            
+            $arrow.css({
+                left: event.clientX + "px",
+                top: event.clientY + "px",
+                transform: `${showTransform} ${instantRotation}`,
+                opacity: opacity.show,
+            });
+            
+            // Restore transition after the rotation is applied
+            setTimeout(() => {
+                $arrow.css('transition', currentTransition);
+            }, 10);
+        } else {
+            $arrow.css({
+                left: event.clientX + "px",
+                top: event.clientY + "px",
+                transform: showTransform,
+                opacity: opacity.show,
+            });
+        }
     });
 
     $trigger.on("mouseleave", function () {
