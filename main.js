@@ -526,6 +526,9 @@ function initArrowHover(triggerElement, arrowElement) {
     });
 }
 
+// Initialize footer arrow hover
+initArrowHover(".footer h2", ".footer .arrow-hover");
+
 /* // Update ScrollTrigger when lazy images are loaded (Causes sccrolling to stutter on Mobile)
 initLazyLoadFix() {
 	const lazyImages = $("img[loading='lazy']");
