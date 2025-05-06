@@ -507,6 +507,7 @@ function initFooterArrowHover() {
 		footerArrow.css({
 			left: event.clientX,
 			top: event.clientY,
+			scale: "1",
 			opacity: "1",
 		});
 	});
@@ -514,6 +515,7 @@ function initFooterArrowHover() {
 	// Handle mouseleave event to hide arrow-hover when not hovering
 	footerHeading.on("mouseleave", function () {
 		footerArrow.css({
+			scale: "0",
 			opacity: "0",
 		});
 	});
