@@ -182,7 +182,8 @@ function initTestimonialSliders() {
 				testimonialsArrowHover.css({ opacity: "0" });
 			}
 		);
-}
+	} // Added missing closing brace for the if statement
+} // Added missing closing brace for initTestimonialSliders function
 
 // News Slider
 function initNewsSlider() {
