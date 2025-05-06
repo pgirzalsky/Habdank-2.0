@@ -162,12 +162,17 @@ function initTestimonialSliders() {
 	        hideTransform: "translate(-50%, -50%) scale(0)"
 	    });
 	    
+	    console.log('After first init, arrow transform:', $(".testimonials .arrow-hover").css('transform'));
+	    
+	    // Use a different approach for the second hover
 	    initArrowHover(".testimonial-image-slider.last", ".testimonials .arrow-hover", {
 	        rotation: "rotate(0deg)",
 	        initialTransform: "translate(-50%, -50%) scale(0)",
 	        showTransform: "translate(-50%, -50%) scale(1)",
 	        hideTransform: "translate(-50%, -50%) scale(0)"
 	    });
+	    
+	    console.log('After second init, arrow transform:', $(".testimonials .arrow-hover").css('transform'));
 	}
 }
 
