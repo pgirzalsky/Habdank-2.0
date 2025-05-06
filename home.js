@@ -155,35 +155,21 @@ function initTestimonialSliders() {
 
 	// Show arrow while hovering on Desktop
 	if ($(window).width() > 992) {
-		const testimonialsArrowHover = $(".testimonials .arrow-hover");
-
-		$(".testimonial-image-slider.first").on("mousemove", function (e) {
-			testimonialsArrowHover.css({
-				top: e.clientY,
-				left: e.clientX,
-				transform: "translate(-50%, -50%) rotate(180deg)",
-				opacity: "1",
-			});
-		});
-
-		$(".testimonial-image-slider.last").on("mousemove", function (e) {
-			testimonialsArrowHover.css({
-				top: e.clientY,
-				left: e.clientX,
-				transform: "translate(-50%, -50%)",
-				opacity: "1",
-			});
-		});
-
-		$(".testimonial-image-slider.first, .testimonial-image-slider.last").on(
-			"mouseleave",
-			function () {
-				// Set opacity to 0 when not hovering
-				testimonialsArrowHover.css({ opacity: "0" });
-			}
-		);
-	} // Added missing closing brace for the if statement
-} // Added missing closing brace for initTestimonialSliders function
+	    initArrowHover(".testimonial-image-slider.first", ".testimonials .arrow-hover", {
+	        instantRotation: "rotate(180deg)",
+	        initialTransform: "translate(-50%, -50%) scale(0)",
+	        showTransform: "translate(-50%, -50%) scale(1)",
+	        hideTransform: "translate(-50%, -50%) scale(0)"
+	    });
+	    
+	    initArrowHover(".testimonial-image-slider.last", ".testimonials .arrow-hover", {
+	        instantRotation: "rotate(0deg)",
+	        initialTransform: "translate(-50%, -50%) scale(0)",
+	        showTransform: "translate(-50%, -50%) scale(1)",
+	        hideTransform: "translate(-50%, -50%) scale(0)"
+	    });
+	}
+}
 
 // News Slider
 function initNewsSlider() {
