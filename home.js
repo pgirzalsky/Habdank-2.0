@@ -156,14 +156,14 @@ function initTestimonialSliders() {
 	// Show arrow while hovering on Desktop
 	if ($(window).width() > 992) {
 	    initArrowHover(".testimonial-image-slider.first", ".testimonials .arrow-hover", {
-	        instantRotation: "rotate(180deg)",
+	        rotation: "rotate(180deg)",
 	        initialTransform: "translate(-50%, -50%) scale(0)",
 	        showTransform: "translate(-50%, -50%) scale(1)",
 	        hideTransform: "translate(-50%, -50%) scale(0)"
 	    });
 	    
 	    initArrowHover(".testimonial-image-slider.last", ".testimonials .arrow-hover", {
-	        instantRotation: "rotate(0deg)",
+	        rotation: "rotate(0deg)",
 	        initialTransform: "translate(-50%, -50%) scale(0)",
 	        showTransform: "translate(-50%, -50%) scale(1)",
 	        hideTransform: "translate(-50%, -50%) scale(0)"
