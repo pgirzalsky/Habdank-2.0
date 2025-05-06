@@ -182,81 +182,44 @@ function initTestimonialSliders() {
 				testimonialsArrowHover.css({ opacity: "0" });
 			}
 		);
-	}
 }
 
-function initjobsArrowHover() {
-	// Jobs Arrow Hover
-	const jobsSection = $(".jobs");
-	const jobsArrow = $(".jobs .arrow-hover");
-
-	jobsSection.on("mousemove", function (event) {
-		jobsArrow.css({
-			left: event.clientX,
-			top: event.clientY,
-			opacity: "1",
-		});
-
-		// Handle mouseleave event to hide arrow-hover when not hovering
-		jobsSection.on("mouseleave", function () {
-			jobsArrow.css({
-				opacity: "0",
-			});
-		});
-	});
-}
+// Initialize jobs arrow hover
+initArrowHover(".jobs", ".jobs .arrow-hover");
 
 // News Slider
 function initNewsSlider() {
-	const newsSlider = new Swiper(".swiper.news-slider", {
-		speed: 1200,
-		grabCursor: true,
-		touchEventsTarget: "container",
-		breakpoints: {
-			320: {
-				slidesPerView: 1.2,
-				spaceBetween: 32,
-			},
-			768: {
-				slidesPerView: 2.5,
-				spaceBetween: 40,
-			},
-			1024: {
-				slidesPerView: 2.5,
-				spaceBetween: 40,
-			},
-			1600: {
-				slidesPerView: 2.33,
-				spaceBetween: 40,
-			},
-		},
-	});
-
-	// Get references to the section and arrow-hover elements
-	const newsItem = $(".news-item a");
-	const newsArrowHover = $(".news .arrow-hover");
-
-	// Function to enable the mousemove event
-	function enableMouseMoveEvent() {
-		newsItem.on("mousemove", function (event) {
-			newsArrowHover.css({
-				left: event.clientX,
-				top: event.clientY,
-				transform: "translate(-50%, -50%) rotate(-45deg)",
-				opacity: "1",
-			});
-		});
-	}
-
-	// Initial enabling of the mousemove event
-	enableMouseMoveEvent();
-
-	// Handle mouseleave event to hide arrow-hover when not hovering
-	newsItem.on("mouseleave", function () {
-		newsArrowHover.css({
-			opacity: "0",
-		});
-	});
+    // Initialize Swiper
+    const newsSlider = new Swiper(".swiper.news-slider", {
+        speed: 1200,
+        grabCursor: true,
+        touchEventsTarget: "container",
+        breakpoints: {
+            320: {
+                slidesPerView: 1.2,
+                spaceBetween: 32,
+            },
+            768: {
+                slidesPerView: 2.5,
+                spaceBetween: 40,
+            },
+            1024: {
+                slidesPerView: 2.5,
+                spaceBetween: 40,
+            },
+            1600: {
+                slidesPerView: 2.33,
+                spaceBetween: 40,
+            },
+        },
+    });
+    
+    // Initialize arrow hover for news items
+    initArrowHover(".news-item a", ".news .arrow-hover", {
+        initialTransform: "translate(-50%, -50%) rotate(-45deg) scale(0)",
+        showTransform: "translate(-50%, -50%) rotate(-45deg) scale(1)",
+        hideTransform: "translate(-50%, -50%) rotate(-45deg) scale(0)"
+    });
 }
 
 // Convert dates to German local
