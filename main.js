@@ -534,8 +534,6 @@ function initArrowHover(triggerElement, arrowElement, options = {}) {
     });
 }
 
-// Initialize footer arrow hover
-initArrowHover(".footer h2", ".footer .arrow-hover");
 
 /* // Update ScrollTrigger when lazy images are loaded (Causes sccrolling to stutter on Mobile)
 initLazyLoadFix() {
@@ -558,5 +556,5 @@ Webflow.push(function () {
 	initMenuInteractions();
 	initHeadingAnimations();
 	initFooterAnimation();
-	initFooterArrowHover();
+	initArrowHover(".footer h2", ".footer .arrow-hover");
 });
