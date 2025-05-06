@@ -159,7 +159,7 @@ function initTestimonialSliders() {
 	    initArrowHover(".testimonial-image-slider.first", ".testimonial-image-slider.first .arrow-hover");
 	    
 	    // Second slider arrow
-	    initArrowHover(".testimonial-image-slider.last", ".testimonial-image-slider.last .arrow-hover");
+	    initArrowHover(".testimonial-image-slider.last", ".slider-last .arrow-hover");
 	}
 }
 
