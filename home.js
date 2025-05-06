@@ -156,7 +156,7 @@ function initTestimonialSliders() {
 	// Show arrow while hovering on Desktop
 	if ($(window).width() > 992) {
 	    initArrowHover(".testimonial-image-slider.first", ".testimonial-image-slider.first .arrow-hover");
-	    initArrowHover(".testimonial-image-slider.last", ".testimonial-image-slider.last .arrow-hover");
+	    initArrowHover(".testimonial-image-slider.last", ".slider-last .arrow-hover");
 	}
 }
 
