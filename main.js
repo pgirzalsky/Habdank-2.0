@@ -498,19 +498,19 @@ function initFooterAnimation() {
 	}, 300);
 }
 
-// Footer Arrow Hover
-function initFooterArrowHover() {
-    const footerHeading = $(".footer h2");
-    const footerArrow = $(".footer .arrow-hover");
+// Arrow Hover
+function initArrowHover(triggerElement, arrowElement) {
+    const $trigger = $(triggerElement);
+    const $arrow = $(arrowElement);
 
     // Set initial state
-    footerArrow.css({
+    $arrow.css({
         transform: "translate(-50%, -50%) scale(0)",
         opacity: "0",
     });
 
-    footerHeading.on("mousemove", function (event) {
-        footerArrow.css({
+    $trigger.on("mousemove", function (event) {
+        $arrow.css({
             left: event.clientX + "px",
             top: event.clientY + "px",
             transform: "translate(-50%, -50%) scale(1)",
@@ -518,9 +518,8 @@ function initFooterArrowHover() {
         });
     });
 
-    // Handle mouseleave event to hide arrow-hover when not hovering
-    footerHeading.on("mouseleave", function () {
-        footerArrow.css({
+    $trigger.on("mouseleave", function () {
+        $arrow.css({
             transform: "translate(-50%, -50%) scale(0)",
             opacity: "0",
         });
