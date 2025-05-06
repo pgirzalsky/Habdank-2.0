@@ -155,11 +155,8 @@ function initTestimonialSliders() {
 
 	// Show arrow while hovering on Desktop
 	if ($(window).width() > 992) {
-	    // First slider arrow
 	    initArrowHover(".testimonial-image-slider.first", ".testimonial-image-slider.first .arrow-hover");
-	    
-	    // Second slider arrow
-	    initArrowHover(".testimonial-image-slider.last", ".slider-last .arrow-hover");
+	    initArrowHover(".testimonial-image-slider.last", ".testimonial-image-slider.last .arrow-hover");
 	}
 }
 
@@ -189,9 +186,6 @@ function initNewsSlider() {
             },
         },
     });
-    
-    // Initialize arrow hover for news items
-    initArrowHover(".news-item a", ".news .arrow-hover");
 }
 
 // Convert dates to German local
@@ -328,6 +322,7 @@ Webflow.push(function () {
 	initTestimonialSliders();
 	initArrowHover(".jobs", ".jobs .arrow-hover");
 	initNewsSlider();
+    	initArrowHover(".news-item a", ".news .arrow-hover");
 	initDateConversion();
 	initHeroAnimation();
 });
