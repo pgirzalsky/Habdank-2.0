@@ -517,14 +517,14 @@ function initArrowHover(triggerElement, arrowElement, options = {}) {
         $arrow.css({
             left: event.clientX + "px",
             top: event.clientY + "px",
-            transform: "rotate(var(--arrow-rotation)) translate(-50%, -100%) scale(1)",
+            transform: "rotate(var(--arrow-rotation)) translate(-50%, -50%) scale(1)",
             opacity: opacity.show,
         });
     });
 
     $trigger.on("mouseleave", function () {
         $arrow.css({
-            transform: "rotate(var(--arrow-rotation)) translate(-50%, -100%) scale(0)",
+            transform: "rotate(var(--arrow-rotation)) translate(-50%, -50%) scale(0)",
             opacity: opacity.hide,
         });
     });
