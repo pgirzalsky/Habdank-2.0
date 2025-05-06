@@ -500,25 +500,31 @@ function initFooterAnimation() {
 
 // Footer Arrow Hover
 function initFooterArrowHover() {
-	const footerHeading = $(".footer h2");
-	const footerArrow = $(".footer .arrow-hover");
+    const footerHeading = $(".footer h2");
+    const footerArrow = $(".footer .arrow-hover");
 
-	footerHeading.on("mousemove", function (event) {
-		footerArrow.css({
-			left: event.clientX,
-			top: event.clientY,
-			scale: "1",
-			opacity: "1",
-		});
-	});
+    // Set initial state
+    footerArrow.css({
+        transform: "translate(-50%, -50%) scale(0)",
+        opacity: "0",
+    });
 
-	// Handle mouseleave event to hide arrow-hover when not hovering
-	footerHeading.on("mouseleave", function () {
-		footerArrow.css({
-			scale: "0",
-			opacity: "0",
-		});
-	});
+    footerHeading.on("mousemove", function (event) {
+        footerArrow.css({
+            left: event.clientX + "px",
+            top: event.clientY + "px",
+            transform: "translate(-50%, -50%) scale(1)",
+            opacity: "1",
+        });
+    });
+
+    // Handle mouseleave event to hide arrow-hover when not hovering
+    footerHeading.on("mouseleave", function () {
+        footerArrow.css({
+            transform: "translate(-50%, -50%) scale(0)",
+            opacity: "0",
+        });
+    });
 }
 
 /* // Update ScrollTrigger when lazy images are loaded (Causes sccrolling to stutter on Mobile)
