@@ -184,9 +184,6 @@ function initTestimonialSliders() {
 		);
 }
 
-// Initialize jobs arrow hover
-initArrowHover(".jobs", ".jobs .arrow-hover");
-
 // News Slider
 function initNewsSlider() {
     // Initialize Swiper
@@ -354,7 +351,7 @@ function initHeroAnimation() {
 
 Webflow.push(function () {
 	initTestimonialSliders();
-	initjobsArrowHover();
+	initArrowHover(".jobs", ".jobs .arrow-hover");
 	initNewsSlider();
 	initDateConversion();
 	initHeroAnimation();
